@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { NUTRITION_QUESTIONS, TITLES } from '../constants';
 
 interface Level3Props {
@@ -15,7 +15,13 @@ const Level3: React.FC<Level3Props> = ({ onUpdateScore, onFinish, finalScore }) 
   const [stage, setStage] = useState<'intro' | 'playing' | 'cleared'>('intro');
   const timerRef = useRef<any | null>(null);
 
-  const currentQuestion = NUTRITION_QUESTIONS[currentQuestionIdx];
+  // 随机抽取5道题目
+  const gameQuestions = useMemo(() => {
+    const shuffled = [...NUTRITION_QUESTIONS].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, 5);
+  }, []);
+
+  const currentQuestion = gameQuestions[currentQuestionIdx];
 
   useEffect(() => {
     const timer = setTimeout(() => setStage('playing'), 1500);
@@ -30,14 +36,16 @@ const Level3: React.FC<Level3Props> = ({ onUpdateScore, onFinish, finalScore }) 
       onUpdateScore(10);
     }
 
-    if (currentQuestionIdx + 1 < NUTRITION_QUESTIONS.length) {
+    if (currentQuestionIdx + 1 < gameQuestions.length) {
       setCurrentQuestionIdx(prev => prev + 1);
       setTimeLeft(5);
     } else {
       setStage('cleared');
       setIsFinished(true);
-      const title = TITLES.reduce((prev, curr) => (finalScore >= curr.threshold ? curr.name : prev), TITLES[0].name);
-      setTimeout(() => onFinish(title), 1500);
+      // 计算最终称号（根据当前总分）
+      const finalTotal = finalScore + (selectedIdx === currentQuestion.answerIndex ? 10 : 0);
+      const titleInfo = TITLES.reduce((prev, curr) => (finalTotal >= curr.threshold ? curr : prev), TITLES[0]);
+      setTimeout(() => onFinish(titleInfo.name), 1500);
     }
   };
 
@@ -89,10 +97,10 @@ const Level3: React.FC<Level3Props> = ({ onUpdateScore, onFinish, finalScore }) 
       <div className="mb-6 flex justify-between items-end">
         <div>
           <h2 className="text-xl font-bold text-gray-800">第三关：知识快问快答</h2>
-          <p className="text-gray-500 text-sm">题目随机，每题限时5秒</p>
+          <p className="text-gray-500 text-sm">题目随机抽选5道，每题限时5秒</p>
         </div>
         <div className="text-right">
-          <span className="text-xs text-gray-400 font-bold">进度: {currentQuestionIdx + 1}/{NUTRITION_QUESTIONS.length}</span>
+          <span className="text-xs text-gray-400 font-bold">进度: {currentQuestionIdx + 1}/{gameQuestions.length}</span>
         </div>
       </div>
 

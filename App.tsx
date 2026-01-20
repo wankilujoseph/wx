@@ -26,6 +26,20 @@ const App: React.FC = () => {
     setGameState(GameState.LEVEL1);
   };
 
+  const handleBackToHome = () => {
+    // 如果在关卡中，增加确认提示
+    if (gameState !== GameState.RESULT) {
+      if (window.confirm('确定要放弃当前挑战返回首页吗？分数将不会被记录。')) {
+        setCurrentScore(0);
+        setGameState(GameState.HOME);
+      }
+    } else {
+      // 在结果页直接返回
+      setCurrentScore(0);
+      setGameState(GameState.HOME);
+    }
+  };
+
   const handleGameOver = (finalTitle: string) => {
     const newHighScore = Math.max(history.highScore, currentScore);
     localStorage.setItem('baby_guardian_high_score', newHighScore.toString());
@@ -40,20 +54,39 @@ const App: React.FC = () => {
     setGameState(GameState.RESULT);
   };
 
+  // 判断是否不在首页
+  const showBackButton = gameState !== GameState.HOME;
+
   return (
     <div className="min-h-screen max-w-md mx-auto bg-amber-50 shadow-xl flex flex-col relative overflow-hidden">
       {/* Brand Header */}
-      <div className="bg-white p-4 flex justify-between items-center border-b border-amber-100 z-10">
-        <h1 className="text-xl font-bold text-red-600 flex flex-col leading-tight">
-          <span className="text-xs text-amber-600 font-normal">伊利金领冠</span>
-          <span>珍护 · 守护官挑战赛</span>
-        </h1>
-        <div className="text-sm font-bold px-3 py-1 bg-red-600 text-white rounded-full shadow-sm">
-          积分: {currentScore}
+      <div className="bg-white p-4 flex justify-between items-center border-b border-amber-100 z-10 min-h-[72px]">
+        <div className="flex items-center gap-1">
+          {showBackButton && (
+            <button 
+              onClick={handleBackToHome}
+              className="flex items-center gap-1 px-2 py-1 -ml-2 hover:bg-amber-50 rounded-lg transition-all active:scale-95 group text-red-600"
+              aria-label="返回首页"
+            >
+              <span className="text-xl font-bold">←</span>
+              <span className="text-xs font-bold">返回</span>
+            </button>
+          )}
+          <h1 className="text-xl font-bold text-red-600 flex flex-col leading-tight ml-1">
+            <span className="text-[10px] text-amber-600 font-normal">伊利金领冠</span>
+            <span className="whitespace-nowrap tracking-tight">珍护 · 守护挑战</span>
+          </h1>
         </div>
+        
+        {gameState !== GameState.HOME && (
+          <div className="text-sm font-bold px-3 py-1 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-full shadow-md flex items-center gap-1 animate-fadeIn">
+            <span className="text-[9px] opacity-80 uppercase tracking-tighter">Score</span>
+            <span className="font-mono">{currentScore}</span>
+          </div>
+        )}
       </div>
 
-      <main className="flex-1 flex flex-col p-6 overflow-y-auto">
+      <main className="flex-1 flex flex-col p-6 overflow-y-auto relative">
         {gameState === GameState.HOME && (
           <Home onStart={startNewGame} history={history} />
         )}

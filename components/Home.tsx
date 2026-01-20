@@ -9,55 +9,107 @@ interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = ({ onStart, history }) => {
+  const score = history.highScore;
+
+  /**
+   * 严格按照用户需求定义头像路径
+   * 建议文件名：
+   * avatar_1.png (爸爸形象)
+   * avatar_2.png (妈妈形象)
+   * avatar_3.png (医生形象)
+   */
+  const getAvatarPath = () => {
+    if (score === 0 || score < 50) {
+      return "./avatar_1.png"; // 第一张：爸爸 (初始/低分)
+    } else if (score >= 50 && score <= 100) {
+      return "./avatar_2.png"; // 第二张：妈妈 (达人)
+    } else {
+      return "./avatar_3.png"; // 第三张：医生 (至臻)
+    }
+  };
+
+  const getLevelInfo = () => {
+    if (score === 0) return { title: '实习守护官', color: 'from-slate-300 to-slate-400', badge: 'bg-slate-500' };
+    if (score > 100) return { title: '至臻守护官', color: 'from-red-500 to-orange-400', badge: 'bg-red-600' };
+    if (score >= 50) return { title: '金牌育儿师', color: 'from-amber-400 to-yellow-500', badge: 'bg-amber-600' };
+    return { title: '新手爸妈', color: 'from-blue-300 to-blue-400', badge: 'bg-blue-500' };
+  };
+
+  const level = getLevelInfo();
+  const avatarPath = getAvatarPath();
+
   return (
-    <div className="flex flex-col items-center justify-center space-y-6 animate-fadeIn h-full">
+    <div className="flex flex-col items-center justify-center space-y-6 animate-fadeIn h-full pb-8">
+      {/* 头像展示区 */}
       <div className="text-center">
-        <div className="relative inline-block mb-4">
-          <div className="w-32 h-32 bg-gradient-to-tr from-amber-400 to-yellow-100 rounded-full flex items-center justify-center mx-auto shadow-lg border-4 border-white">
-            <span className="text-6xl">🍼</span>
+        <div className="relative inline-block">
+          {/* 外圈装饰 */}
+          <div className={`w-48 h-48 bg-gradient-to-tr ${level.color} rounded-full flex items-center justify-center mx-auto shadow-2xl p-1`}>
+            {/* 纯白内圈 */}
+            <div className="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden border-4 border-white shadow-inner">
+              <img 
+                src={avatarPath} 
+                alt="守护官头像"
+                className="w-[90%] h-[90%] object-contain transition-transform duration-500 hover:scale-110"
+                style={{ filter: score === 0 ? 'grayscale(0.2)' : 'none' }}
+                onError={(e) => {
+                  // 后备方案：如果图片确实找不到，显示一个带文字的圆形
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                  const parent = target.parentElement;
+                  if (parent) {
+                    parent.innerHTML = `<div class="text-4xl">👶</div>`;
+                  }
+                }}
+              />
+            </div>
           </div>
-          <div className="absolute -bottom-2 -right-2 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-md">
-            1段专属
+
+          {/* 等级标牌 */}
+          <div className={`absolute -bottom-2 left-1/2 -translate-x-1/2 ${level.badge} text-white text-sm font-black px-6 py-1.5 rounded-full shadow-lg border-2 border-white animate-bounce-in whitespace-nowrap`}>
+            {level.title}
           </div>
         </div>
-        <h2 className="text-2xl font-black text-red-700 mb-1">{BRAND_NAME}</h2>
-        <p className="text-amber-700 font-medium text-sm">{PRODUCT_SUBTITLE}</p>
-        <p className="text-gray-400 text-xs mt-2 italic">“超级配方，给宝宝至臻守护”</p>
-      </div>
 
-      <div className="w-full bg-white/80 backdrop-blur-sm rounded-2xl p-5 shadow-sm border border-amber-100">
-        <h3 className="text-amber-800 text-[10px] font-bold uppercase tracking-widest mb-3 border-b border-amber-50 pb-2 flex justify-between">
-          <span>守护记录</span>
-          <span className="text-red-500">Lv.{history.highScore > 85 ? '3' : history.highScore > 50 ? '2' : '1'}</span>
-        </h3>
-        <div className="grid grid-cols-2 gap-3">
-          <div className="bg-amber-50/50 p-3 rounded-xl border border-amber-100/50">
-            <p className="text-[10px] text-amber-600">巅峰守护分</p>
-            <p className="text-xl font-black text-red-600">{history.highScore}</p>
-          </div>
-          <div className="bg-amber-50/50 p-3 rounded-xl border border-amber-100/50">
-            <p className="text-[10px] text-amber-600">最高荣誉</p>
-            <p className="text-sm font-bold text-red-600 truncate mt-1">{history.bestTitle}</p>
-          </div>
+        <div className="mt-8">
+          <h2 className="text-2xl font-black text-red-700 tracking-tight">{BRAND_NAME}</h2>
+          <p className="text-amber-800 font-bold text-sm opacity-80">{PRODUCT_SUBTITLE}</p>
         </div>
       </div>
 
-      <div className="space-y-4 w-full">
+      {/* 数据卡片 */}
+      <div className="w-full grid grid-cols-2 gap-4">
+        <div className="bg-white rounded-2xl p-4 shadow-sm border border-amber-100 flex flex-col items-center">
+          <span className="text-[10px] text-amber-600 font-bold uppercase">最高守护分</span>
+          <span className="text-2xl font-black text-red-600">{score}</span>
+        </div>
+        <div className="bg-white rounded-2xl p-4 shadow-sm border border-amber-100 flex flex-col items-center">
+          <span className="text-[10px] text-amber-600 font-bold uppercase">解锁成就</span>
+          <span className="text-sm font-black text-amber-800 mt-1">{level.title}</span>
+        </div>
+      </div>
+
+      {/* 按钮区 */}
+      <div className="w-full space-y-3 pt-2">
         <button 
           onClick={onStart}
-          className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 active:scale-95 transition-all text-white font-bold py-4 rounded-2xl shadow-xl shadow-red-200 text-lg flex flex-col items-center justify-center leading-tight"
+          className="w-full bg-red-600 hover:bg-red-700 active:scale-95 transition-all text-white font-black py-4 rounded-2xl shadow-xl shadow-red-100 text-lg"
         >
-          <span>立即开启挑战</span>
-          <span className="text-[10px] opacity-80 font-normal">解锁宝宝营养奥秘</span>
+          {score === 0 ? '开启守护官之旅' : '挑战更高级别'}
         </button>
+        <p className="text-[10px] text-center text-amber-800/40">
+          *完成挑战后，系统将根据最终得分自动晋升头像形象
+        </p>
       </div>
 
-      <div className="mt-auto w-full p-4 bg-white/50 rounded-xl border border-dashed border-amber-200">
-        <div className="flex items-center gap-3">
-          <div className="text-2xl">✨</div>
-          <div className="text-[11px] text-amber-800 leading-snug">
-            <strong>小贴士：</strong> 细心观察宝宝状态，掌握科学冲奶技巧，是成为金领冠“至臻守护官”的关键！
-          </div>
+      {/* 底部贴片 */}
+      <div className="bg-amber-100/30 rounded-xl p-3 border border-dashed border-amber-200 w-full">
+        <div className="flex items-start gap-2">
+          <span className="text-lg">🎖️</span>
+          <p className="text-[11px] text-amber-900/70 leading-relaxed">
+            <strong>晋升小贴士：</strong><br/>
+            冲奶关快速点击、状态关连续答对、知识关满分，是解锁<b>至臻专家头像</b>的关键！
+          </p>
         </div>
       </div>
     </div>

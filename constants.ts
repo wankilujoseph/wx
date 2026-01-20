@@ -15,38 +15,68 @@ export const BABY_STATUSES: BabyStatus[] = [
 export const NUTRITION_QUESTIONS: Question[] = [
   {
     id: 1,
-    question: "金领冠珍护1段奶粉适用于哪个年龄段的宝宝？",
-    options: ["0-6月龄", "6-12月龄", "1-3岁"],
-    answerIndex: 0
+    question: "新生儿（0–28 天）正常呼吸频率大约是？",
+    options: ["10–20 次/分钟", "20–30 次/分钟", "30–60 次/分钟", "60–90 次/分钟"],
+    answerIndex: 2
   },
   {
     id: 2,
-    question: "根据成分表，每100g金领冠珍护1段奶粉中DHA的含量是？",
-    options: ["50mg", "100mg", "130mg"],
-    answerIndex: 1
+    question: "婴儿发热时，家用体温计测量更推荐哪种方式？",
+    options: ["额温枪永远最准", "耳温一定比腋温准", "腋温更方便，注意按压到位", "用手摸额头最可靠"],
+    answerIndex: 2
   },
   {
     id: 3,
-    question: "金领冠珍护1段中含有AA/ARA，每100g的含量是多少？",
-    options: ["100mg", "110mg", "130mg"],
+    question: "母乳喂养的宝宝，通常什么时候需要额外补水？",
+    options: ["一出生就必须补水", "夏天必须每天喂水", "6 个月内一般不需要额外补水", "只要哭就喂水"],
     answerIndex: 2
   },
   {
     id: 4,
-    question: "冲调奶粉时，为了保护营养活性，建议水温通常是多少？",
-    options: ["20℃", "40-50℃", "100℃"],
+    question: "给宝宝冲奶粉，最正确的顺序是？",
+    options: ["先加奶粉再加水", "先加水到刻度线，再加奶粉", "随便，能冲开就行", "用开水直接冲最干净"],
     answerIndex: 1
   },
   {
     id: 5,
-    question: "金领冠珍护1段成分表中的‘二十二碳六烯酸’通常被称为什么？",
-    options: ["DHA", "ARA", "叶酸"],
-    answerIndex: 0
+    question: "奶瓶清洗后，最推荐的消毒方法是？",
+    options: ["冷水冲一下就行", "用洗洁精泡一晚", "沸水煮/蒸汽消毒后自然晾干", "用酒精喷雾消毒最方便"],
+    answerIndex: 2
+  },
+  {
+    id: 6,
+    question: "宝宝夜里睡觉更安全的睡姿是？",
+    options: ["趴睡更踏实", "侧睡更不呛奶", "仰睡更安全", "怎么睡都一样"],
+    answerIndex: 2
+  },
+  {
+    id: 7,
+    question: "以下哪种情况更像“需要就医评估的黄疸”？",
+    options: ["出生后 2–3 天出现", "宝宝精神差、吃奶差、嗜睡明显", "皮肤有点黄但能吃能睡", "大便小便正常"],
+    answerIndex: 1
+  },
+  {
+    id: 8,
+    question: "宝宝开始添加辅食的常见建议时间是？",
+    options: ["2 个月", "4–6 个月", "9 个月", "1 岁以后"],
+    answerIndex: 1
+  },
+  {
+    id: 9,
+    question: "宝宝打完疫苗后，哪些反应更常见、通常可观察？",
+    options: ["持续高烧 40℃ 不退", "注射部位轻微红肿、低热", "呼吸困难、全身风团", "抽搐、意识不清"],
+    answerIndex: 1
+  },
+  {
+    id: 10,
+    question: "预防婴儿猝死综合征（SIDS），哪项做法更正确？",
+    options: ["盖厚被子捂热一点", "睡床上放枕头更舒服", "婴儿单独睡平整床垫、避免松软物", "越软越安全"],
+    answerIndex: 2
   }
 ];
 
 export const TITLES = [
-  { threshold: 0, name: '新手爸妈', color: 'text-gray-500' },
-  { threshold: 50, name: '育儿达人', color: 'text-amber-600' },
-  { threshold: 85, name: '至臻守护官', color: 'text-red-600' }
+  { threshold: 0, name: '新手爸妈', color: 'text-gray-500', avatar: './avatar_1.png' },
+  { threshold: 50, name: '育儿达人', color: 'text-amber-600', avatar: './avatar_2.png' },
+  { threshold: 101, name: '至臻守护官', color: 'text-red-600', avatar: './avatar_3.png' }
 ];
