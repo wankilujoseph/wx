@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "react": "^19.2.3",
-    "react-dom": "^19.2.3"
+    "react-dom": "^19.2.3",
+    "@tarojs/taro": "^4.1.10",
+    "@tarojs/components": "^4.1.10"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
