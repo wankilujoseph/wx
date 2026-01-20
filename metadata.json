@@ -1,0 +1,7 @@
+{
+  "name": "宝宝守护官挑战赛",
+  "description": "一个用于品牌宣传的轻量级育儿互动闯关小游戏，包含冲奶、状态判断和营养知识挑战。",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
