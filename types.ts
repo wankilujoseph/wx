@@ -25,4 +25,5 @@ export interface BabyStatus {
   status: '哭闹' | '困倦' | '饥饿';
   action: '换尿布' | '哄睡' | '喂奶';
   description: string;
+  image: string;
 }

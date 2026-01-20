@@ -4,12 +4,32 @@ import { Question, BabyStatus } from './types';
 export const BRAND_NAME = "金领冠 珍护";
 export const PRODUCT_SUBTITLE = "1段婴幼儿配方奶粉";
 
-export const LEVEL1_SEQUENCE = ['洗手', '加水', '加奶粉', '摇匀'];
+export const LEVEL1_SEQUENCE = [
+  { name: '洗手', image: './step_1.png' },
+  { name: '加水', image: './step_2.png' },
+  { name: '加奶粉', image: './step_3.png' },
+  { name: '摇匀', image: './step_4.png' }
+];
 
 export const BABY_STATUSES: BabyStatus[] = [
-  { status: '哭闹', action: '换尿布', description: '宝宝脸涨得通红，身体扭动，可能是纸尿裤不舒服。' },
-  { status: '困倦', action: '哄睡', description: '宝宝揉眼睛，打哈欠，表现出明显的倦意。' },
-  { status: '饥饿', action: '喂奶', description: '宝宝寻找奶头，吸吮手指，这是该补充营养的信号。' }
+  { 
+    status: '哭闹', 
+    action: '换尿布', 
+    description: '宝宝脸涨得通红，身体扭动，可能是纸尿裤不舒服。',
+    image: './status_crying.png'
+  },
+  { 
+    status: '困倦', 
+    action: '哄睡', 
+    description: '宝宝揉眼睛，打哈欠，表现出明显的倦意。',
+    image: './status_sleepy.png'
+  },
+  { 
+    status: '饥饿', 
+    action: '喂奶', 
+    description: '宝宝寻找奶头，吸吮手指，这是该补充营养的信号。',
+    image: './status_hungry.png'
+  }
 ];
 
 export const NUTRITION_QUESTIONS: Question[] = [
